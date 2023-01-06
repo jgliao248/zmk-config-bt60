@@ -42,7 +42,7 @@
 				&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
 				&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans 
 				&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans 
-				&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+				&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
 				&kp LCTRL &kp LALT &kp LGUI		 &trans 		&kp RGUI &trans &trans &trans &trans 
 			>;
 			sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
