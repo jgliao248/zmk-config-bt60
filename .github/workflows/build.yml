@@ -9,12 +9,13 @@ jobs:
       image: zmkfirmware/zmk-build-arm:stable
     name: Build
     steps:
+      # Checkout the repository
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      # Cache west modules
       - name: Cache west modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-zephyr-modules
+        uses: actions/cache@v4
         with:
           path: |
             modules/
@@ -22,23 +23,35 @@ jobs:
             zephyr/
             bootloader/
             zmk/
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('manifest-dir/west.yml') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('manifest-dir/west.yml') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
-            ${{ runner.os }}-
+
+      # Initialize West
       - name: West Init
         run: west init -l config
+
+      # Update modules with West
       - name: West Update
         run: west update
+
+      # Export Zephyr environment variables
       - name: West Zephyr export
         run: west zephyr-export
+
+      # Build firmware for bt60
       - name: West Build (bt60)
         run: west build -s zmk/app -b bt60 -- -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
+
+      # Display bt60 Kconfig file
       - name: bt60 Kconfig file
         run: cat build/zephyr/.config | grep -v "^#" | grep -v "^$"
+
+      # Rename the firmware file
       - name: Rename zmk.uf2
         run: cp build/zephyr/zmk.uf2 bt60.uf2
+
+      # Archive the firmware file
       - name: Archive (bt60)
         uses: actions/upload-artifact@v4
         with:
